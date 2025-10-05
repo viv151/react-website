@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import TodoCard from "../Todo/TodoCard";
+import TodoHeader from "../Todo/TodoHeader";
+import Modal from "../Modal/Modal";
+import AddTodo from "../Todo/AddTodo";
 
 const Lists = ({ activeListId, setShowListForm }) => {
   const lists = useSelector((state) => state.lists);
+  const [isAddTaskForm, setIsAddTaskForm] = useState(false);
   const [activeList, setIsActiveList] = useState({
     name: "",
     desc: "",
     tasks: [],
   });
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     const activeList = activeListId
@@ -23,25 +28,42 @@ const Lists = ({ activeListId, setShowListForm }) => {
     }
   }, [activeListId]);
 
-  console.log(activeList);
+  const tasks = activeList.tasks;
+
+  const handleStatusFilter = (e) => {
+    setStatus(e.target.value);
+  };
+
+  const filteredTasks =
+    status === "completed" || status === "pending"
+      ? tasks.filter((task) => task.completed === (status === "completed"))
+      : tasks;
+
+  // console.log(tasks, activeList.tasks);
   return (
-    <div>
-      {lists && lists.length > 0 && activeListId ? (
-        <div className="mt-28 relative z-100">
-          {activeList.tasks && activeList.tasks.length > 0 ? (
-            activeList.tasks.map((task) => (
-              <TodoCard
-                id={task.id}
-                title={task.title}
-                description={task.description}
-              />
-            ))
-          ) : (
-            <p className="mb-6 text-lg text-gray-300">
-              You don't have any tasks yet. Create your first task.
-            </p>
-          )}
-        </div>
+    <>
+      {lists && lists.length > 0 ? (
+        <>
+          <TodoHeader
+            activeListTitle={activeList?.name || "No List Selected"}
+            onAddTaskClick={() => setIsAddTaskForm(true)}
+            activeListId={activeListId}
+            onStatusChange={handleStatusFilter}
+            selectedStatus={status}
+          />
+          <div className="mt-28 relative z-100">
+            {filteredTasks &&
+              filteredTasks.length > 0 &&
+              filteredTasks.map((task) => (
+                <TodoCard
+                  key={task.id}
+                  title={task.message}
+
+                  // description={task.description}
+                />
+              ))}
+          </div>
+        </>
       ) : (
         <div className="py-6 flex items-center justify-center h-screen text-center w-full box-border">
           <div className="section-title">
@@ -59,7 +81,19 @@ const Lists = ({ activeListId, setShowListForm }) => {
           </div>
         </div>
       )}
-    </div>
+
+      {lists && lists.length > 0 && activeListId}
+      <Modal
+        isOpen={isAddTaskForm}
+        onClose={() => setIsAddTaskForm(false)}
+        title="Add task"
+      >
+        <AddTodo
+          onSubmit={() => setIsAddTaskForm(false)}
+          activeListId={activeListId}
+        />
+      </Modal>
+    </>
   );
 };
 

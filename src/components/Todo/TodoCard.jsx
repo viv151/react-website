@@ -1,6 +1,6 @@
 import React from "react";
 
-const TodoCard = ({ id, completed, title, description }) => {
+const TodoCard = ({ id, completed, title,  }) => {
   return (
     <section className="flex justify-center my-5 mx-auto">
       <div className={`task-card ${completed ? "completed" : ""}`}>
@@ -24,9 +24,9 @@ const TodoCard = ({ id, completed, title, description }) => {
             <div className="card-title">
               <h2 className={completed ? "strike" : ""}>{title}</h2>
             </div>
-            <div className="card-description">
+            {/* <div className="card-description">
               <p className={completed ? "dim-text" : ""}>{description}</p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

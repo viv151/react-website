@@ -233,3 +233,21 @@ body {
   opacity: 1;
   transform: translateY(-50%);
 }
+
+
+/* todo header */
+
+.select-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ccc;
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+.task-status-filter option {
+  background-color: #111;
+  color: #eee;
+}

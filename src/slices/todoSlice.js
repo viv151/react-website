@@ -36,8 +36,9 @@ const todoSlice = createSlice(
             addTask: (state, action) => {
                 const id = nanoid();
                 const list = state.lists.find((list) => list.id === action.payload.id)
-                const newTask = { id, message: action.payload.message, completed: false }
+                const newTask = { todoId: id, message: action.payload.message, completed: false }
                 list.listItems.push(newTask)
+                console.log(newTask)
             }
         }
     }
